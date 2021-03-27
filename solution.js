@@ -15,7 +15,7 @@ const q1Result = document.querySelector("#result");
 
 q1Btn.addEventListener("click", (e)=>{
 
-    q1Result.textContent = Number(q1Amount.value)*.2;
+    q1Result.textContent = `Tip on $${q1Amount.value} is: $${Number(q1Amount.value)*.2}`;
 
 })
 //ezy pezy
@@ -88,7 +88,7 @@ q4AddBtn.addEventListener("click", (e)=>{
 })
 
 q4DisplayBtn.addEventListener("click", (e)=>{
-    result4a.innerHTML = "Display the array here: <br>" +q4Array.join(", ");
+    result4a.innerHTML = "Display the array here: <br>[" +q4Array.join(" ") + "]";
 
     result4b.innerHTML = "Display the result here: <br>"+mostFrequent(q4Array);
 
@@ -176,17 +176,19 @@ let isBValid = true;
 let isCValid = true;
 
 inputA.addEventListener("change", (e)=>{
-    if(e.target.value == 0 || e.target.value < -99 || e.target.value > 99){
+    if(e.target.value == 0 || e.target.value < -99 || e.target.value > 99 || e.target.value == "" || e.target.value == undefined){
+        console.log("is invalid");
         e.target.style.borderColor = "red";
         isAValid = false;
     }else{
+        console.log("is valid");
         e.target.style.borderColor = "green";
         isAValid = true;
     }
 })
 
 inputB.addEventListener("change", (e)=>{
-    if(e.target.value < -99 || e.target.value > 99){
+    if(e.target.value < -99 || e.target.value > 99 || e.target.value == "" || e.target.value == undefined){
         e.target.style.borderColor = "red";
         isBValid = false;
     }else{
@@ -196,7 +198,7 @@ inputB.addEventListener("change", (e)=>{
 })
 
 inputC.addEventListener("change", (e)=>{
-    if(e.target.value < -99 || e.target.value > 99){
+    if(e.target.value < -99 || e.target.value > 99 || e.target.value == "" || e.target.value == undefined){
         e.target.style.borderColor = "red";
         isCValid = false;
     }else{
@@ -211,20 +213,42 @@ const q7Solution = document.querySelector("#soln");
 
 calcRootBtn.addEventListener("click", (e)=>{
     q7Solution.innerHTML = "";
-    if(isAValid && isBValid && isCValid){
 
-    }else{
-        if(!isAValid){
-            q7Solution.innerHTML += `The value of "a": ${inputA.value} is invalid <br/>`;
-        }
-        if(!isBValid){
-            q7Solution.innerHTML += `The value of "b": ${inputB.value} is invalid <br/>`;
-        }
-        if(!isCValid){
-            q7Solution.innerHTML += `The value of "c": ${inputC.value} is invalid <br/>`;
+    let a = inputA.value;
+    let b = inputB.value;
+    let c = inputC.value;
+
+    
+
+    let conditionEquation = 4*a*c;
+    let numbersAreValid = true;
+
+    if(!isAValid || a == "" || a == undefined){
+        q7Solution.innerHTML += `The value of "a": ${inputA.value} is invalid <br/>`;
+        numbersAreValid = false;
+    }
+    if(!isBValid || b == "" || b== undefined){
+        q7Solution.innerHTML += `The value of "b": ${inputB.value} is invalid <br/>`;
+        numbersAreValid = false;
+    }
+    if(!isCValid || c == "" || c == undefined){
+        q7Solution.innerHTML += `The value of "c": ${inputC.value} is invalid <br/>`;
+        numbersAreValid = false;
+    }
+    
+    if(numbersAreValid){
+        if((b*b) < conditionEquation){
+            q7Solution.innerHTML += "Solution: x's roots are imaginary";
+        }else if((b*b)== conditionEquation){
+            q7Solution.innerHTML += `Solution: x = ${((-b+Math.sqrt((b*b)-4*a*c))/(2*a)).toFixed(3)}`;
+        }else{
+            q7Solution.innerHTML += `Solution: x = ${((-b+Math.sqrt((b*b)-4*a*c))/(2*a)).toFixed(3)}, x = ${((-b-Math.sqrt((b*b)-4*a*c))/(2*a)).toFixed(3)} `;
         }
     }
 
+    inputA.value = "";
+    inputB.value = "";
+    inputC.value = "";
 })
 
 
